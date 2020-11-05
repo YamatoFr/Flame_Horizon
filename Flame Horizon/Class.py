@@ -39,7 +39,7 @@ class DeplacementLineaire(ElementGraphique):
 	"""docstring for DeplacementLineaire"""
 	def __init__(self, fenetre, img, x=0, y=0):
 		ElementGraphique.__init__(self, fenetre, img, x, y)
-		self.dx = 3
+		self.dx = -3
 		self.dy = 0
 	
 	def deplacer(self):
@@ -54,7 +54,7 @@ class Perso(ElementGraphique):
 		self.vie = 50
 
 
-	def déplacer(self, touches, largeur, hauteur):
+	def deplacer(self, touches, largeur, hauteur):
 		if (touches[pg.K_RIGHT] or touches[pg.K_d]) and self.rect.x < largeur - self.rect.w:
 			self.rect.x += self.vitesse
 
@@ -67,6 +67,25 @@ class Perso(ElementGraphique):
 		if (touches[pg.K_DOWN] or touches[pg.K_s]) and self.rect.y < hauteur - self.rect.h:
 			self.rect.y += self.vitesse
 
+class Ennemis(ElementAnime):
+	"""docstring for Ennemis"""
+	def __init__(self, fenetre, img, x, y):
+		super().__init__(fenetre, images, x, y)
+		self.vie = 20
+		self.vitesse = 5
+
+
+class Tirs(ElementAnime):
+		"""docstring for Tirs"""
+		def __init__(self, fenetre, images, x=0, y=0):
+			super().__init__(fenetre, images, x, y)
+			self.dx = 5
+			self.dy = 0
+
+		def deplacer(self):
+			self.rect.x += self.dx
+			self.rect.y += self.dy 
+				
 
 class Meteorite(ElementGraphique):
 	def __init__(self, fenetre, img, x , y):
