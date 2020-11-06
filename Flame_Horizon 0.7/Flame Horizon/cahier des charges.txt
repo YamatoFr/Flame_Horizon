@@ -1,0 +1,14 @@
+jeu en horizontal : coordonné à voir
+chercher des images, décor spatial 
+plusieurs niveaux: 2 pour l'insant 
+des boss de fin de niveau
+des bonus, mallus 
+des ennemies dynamiques: fonctions, système de spawn équilibré
+des sons, musiques, effet
+système de score, barre de vie
+
+
+GROSSES PARTIE A BOSSER : l'animation 
+
+
+ 
