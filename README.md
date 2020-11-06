@@ -1,6 +1,6 @@
 # Flame_Horizon
 
-Version 0.55:<br/>
+Version 0.6:<br/>
 -Ajout class Tirs<br/>
 -Ajout def tirs/tirs<br/>
 -Essai animation<br/>
