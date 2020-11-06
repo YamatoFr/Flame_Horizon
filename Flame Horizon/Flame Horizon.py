@@ -1,6 +1,7 @@
 import pygame as pg
 from Class import *
 from Dico import *
+import os
 pg.font.init()
 pg.init()
 
@@ -20,7 +21,6 @@ fond_1 = ElementGraphique(fenetre, images['fond_1'], 0, 0)
 txt_play = ElementGraphique(fenetre, ecriture['play'], 500, 140)
 txt_quit = ElementGraphique(fenetre, ecriture['quit'], 520, 350)
 tirs = []
-
 
 while State:
 	horloge.tick(60)
@@ -63,15 +63,15 @@ while State:
 
 		tir(tirs, images, time, fps, 1)
 
-		for t in tirs:
-			t.deplacer()
-			t.afficher()
+		#for t in tirs:
+		#	t.deplacer()
+		#	t.afficher()
 		
-		#if len(ennemies)<8 :
-		#	ajouter(hauteur, largeur, images, ennemies)
-		#for ennemie in ennemies :
-		#	ennemie.afficher()
-		#	ennemie.move(largeur, hauteur, ennemies)
+		if len(ennemies)<8 :
+			ajouter(hauteur, largeur, images, ennemies)
+		for ennemie in ennemies :
+			ennemie.afficher()
+			ennemie.move(largeur, hauteur, ennemies)
 
 
 	pg.display.flip()

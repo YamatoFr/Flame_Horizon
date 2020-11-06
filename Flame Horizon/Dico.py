@@ -1,5 +1,6 @@
 import pygame as pg
 import random
+from random import randint
 from Class import *
 
 largeur, hauteur = 1300, 650
@@ -17,12 +18,12 @@ images['vaisseau3'] = pg.image.load("image/perso/perso_3.png").convert_alpha()
 images['vaisseau4'] = pg.image.load("image/perso/perso_4.png").convert_alpha()
 images['vaisseau5'] = pg.image.load("image/perso/perso_5.png").convert_alpha()
 images['astéroide'] = pg.image.load("image/ennemies/astéroide.png").convert_alpha()
-#images['tribase1_nor'] = pg.image.load("image/ennemies/tribase1_nor.png").convert_alpha()
-#images['tribase1_chr'] = pg.image.load("image/ennemies/tribase1_chr.png").convert_alpha()
-#images['tribase2_nor'] = pg.image.load("image/ennemies/tribase2_nor.png").convert_alpha()
-#images['tribase2_chr'] = pg.image.load("image/ennemies/tribase2_chr.png").convert_alpha()
-#images['tribase3_nor'] = pg.image.load("image/ennemies/tribase3_nor.png").convert_alpha()
-#images['tribase3_chr'] = pg.image.load("image/ennemies/tribase3_chr.png").convert_alpha()
+images['tribase1_nor'] = pg.image.load("image/ennemies/tribase1_nor.png").convert_alpha()
+images['tribase1_chr'] = pg.image.load("image/ennemies/tribase1_chr.png").convert_alpha()
+images['tribase2_nor'] = pg.image.load("image/ennemies/tribase2_nor.png").convert_alpha()
+images['tribase2_chr'] = pg.image.load("image/ennemies/tribase2_chr.png").convert_alpha()
+images['tribase3_nor'] = pg.image.load("image/ennemies/tribase3_nor.png").convert_alpha()
+images['tribase3_chr'] = pg.image.load("image/ennemies/tribase3_chr.png").convert_alpha()
 images['flame'] = []
 for i in range(4):
 	images['flame'].append(pg.image.load('image/tirs/flameBall_'+str(i)+'.png').convert_alpha())
