@@ -63,9 +63,9 @@ while State:
 
 		tir(tirs, images, time, fps, 1)
 
-		#for t in tirs:
-		#	t.deplacer()
-		#	t.afficher()
+		for t in tirs:
+			t.deplacer()
+			t.afficher()
 		
 		if len(ennemies)<8 :
 			ajouter(hauteur, largeur, images, ennemies)
