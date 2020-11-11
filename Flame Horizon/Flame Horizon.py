@@ -65,14 +65,18 @@ while State:
 
 		for t in tirs:
 			t.deplacer()
-			t.afficher()
 		
 		if len(ennemies)<8 :
 			ajouter(hauteur, largeur, images, ennemies)
+
 		for ennemie in ennemies :
-			ennemie.afficher()
 			ennemie.move(largeur, hauteur, ennemies)
 
+		for ennemie in ennemies :
+			ennemie.afficher()
+
+		for t in tirs:
+			t.afficher()
 
 	pg.display.flip()
 pg.quit()

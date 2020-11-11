@@ -23,16 +23,16 @@ class ElementAnime(ElementGraphique):
 		self.timer = 0 # timer pour l'animation
 		self.numAnim = 0 # numéro de l'image courante
 
-	def afficher():
+	def afficher(self):
 		self.timer += 1
 		if self.timer > 5:
 			self.timer = 0
 			self.numAnim += 1
 			if self.numAnim >= len(self.images):
 				self.numAnim = 0
-				self.image = self.images[self.numAnim]
+			self.image = self.images[self.numAnim]
 
-			super().afficher()
+		super().afficher()
 
 
 class DeplacementLineaire(ElementGraphique):
