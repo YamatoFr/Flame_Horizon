@@ -1,5 +1,10 @@
 # Flame_Horizon
 
+Version 0.7:<br/>
+-Ajout Animation<br/>
+-Corrigé images tirs<br/>
+-Corrigé animation<br/>
+
 Version 0.6:<br/>
 -Ajout class Tirs<br/>
 -Ajout def tirs/tirs<br/>
