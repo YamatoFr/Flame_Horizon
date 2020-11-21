@@ -10,21 +10,29 @@ largeur, hauteur = 1300, 650
 fenetre = pg.display.set_mode((largeur,hauteur))
 horloge = pg.time.Clock()
 fps = 30
-time = 0
+i = 1
 State = "Menu"
 select = 1
 ennemies = []
+a=100
+niveau = 1
 
 perso = Perso(fenetre, images['vaisseau1'],240, 300)
+ennemis = Ennemis(fenetre, images['tribase1_nor'], largeur+20,randint(0,hauteur+20))
+meteorite = Meteorite(fenetre, images['astéroide'], randint(0, largeur), randint(0, hauteur//hauteur))
 fond_0 = ElementGraphique(fenetre, images['fond_0'], 0, 0)
 fond_1 = ElementGraphique(fenetre, images['fond_1'], 0, 0)
 txt_play = ElementGraphique(fenetre, ecriture['play'], 500, 140)
 txt_quit = ElementGraphique(fenetre, ecriture['quit'], 520, 350)
+txt_vie = ElementGraphique(fenetre, ecriture['vie'],50, 500)
 tirs = []
+last_tirs = 0
+
+
 
 while State:
 	horloge.tick(60)
-	time += 1
+	i += 1
 	touches = pg.key.get_pressed()
 	for event in pg.event.get():   
 		if event.type==pg.QUIT:     
@@ -58,25 +66,34 @@ while State:
 
 	if State == "Jeu":
 		fond_1.afficher()
+		#txt_vie.afficher()
 		perso.afficher()
 		perso.deplacer(touches, largeur, hauteur)
-
-		tir(tirs, images, time, fps, 1)
-
-		for t in tirs:
-			t.deplacer()
 		
-		if len(ennemies)<8 :
-			ajouter(hauteur, largeur, images, ennemies)
+		if touches[pg.K_l] and i-last_tirs>30:
+			tir(tirs, images, i, fps, 1, perso)
+			last_tirs = i
 
-		for ennemie in ennemies :
-			ennemie.move(largeur, hauteur, ennemies)
+		if len(ennemies)<8:
+			a = ajouter(i, hauteur, largeur, images, ennemies, a)
 
-		for ennemie in ennemies :
-			ennemie.afficher()
+		State = perso.en_vie()
 
-		for t in tirs:
-			t.afficher()
+		new_en = []
+		# new_tir = []
+		for ennemie in ennemies:
+			for t in tirs:
+				ennemie.collision(t, tirs)
+				# Cause un crash lors de la sortie de l'écran
+				# if t.collision(ennemie, ennemies): 
+						# new_tir.append(t)
+			if ennemie.enVie(ennemies, largeur, hauteur):
+				new_en.append(ennemie)
+			ennemies = new_en
+			# tirs = new_tir
 
+		deplacements(tirs, ennemies)
+		affichage(tirs, ennemies)
+			
 	pg.display.flip()
 pg.quit()

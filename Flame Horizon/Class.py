@@ -3,6 +3,7 @@ pg.font.init()
 pg.init()
 
 
+
 class ElementGraphique:
 	def __init__(self, fenetre, img, x, y): 
 		self.image = img
@@ -46,12 +47,13 @@ class DeplacementLineaire(ElementGraphique):
 		self.rect.x += self.dx
 		self.rect.y += self.dy
 
+# CLASSES DU JOUEUR
 
 class Perso(ElementGraphique):
 	def __init__(self, fenetre, img, x=100, y=325):
 		super().__init__(fenetre, img, x, y)
 		self.vitesse = 7
-		self.vie = 50
+		self.vie = 20
 
 
 	def deplacer(self, touches, largeur, hauteur):
@@ -66,34 +68,71 @@ class Perso(ElementGraphique):
 
 		if (touches[pg.K_DOWN] or touches[pg.K_s]) and self.rect.y < hauteur - self.rect.h:
 			self.rect.y += self.vitesse
+		#if touches[pg.K_C] :
+	
 
-class Ennemis(ElementAnime):
-	"""docstring for Ennemis"""
-	def __init__(self, fenetre, img, x, y):
-		super().__init__(fenetre, images, x, y)
-		self.vie = 20
-		self.vitesse = 5
+	def collision(self, ennemie, ennemies):
+		if self.rect.colliderect(ennemie):
+			self.vie-=2
+
+	def en_vie(self):
+		if self.vie<=0:
+			return False 
+		return "Jeu"
 
 
 class Tirs(ElementAnime):
 		"""docstring for Tirs"""
 		def __init__(self, fenetre, images, x=0, y=0):
 			super().__init__(fenetre, images, x, y)
-			self.dx = 5
+			self.dx = 7
 			self.dy = 0
 
 		def deplacer(self):
 			self.rect.x += self.dx
-			self.rect.y += self.dy 
-				
+			self.rect.y += self.dy
+
+		# def collision(self, ennemie, ennemies):
+			# if self.rect.colliderect(ennemie):
+				# return False
+			# return True
+
+
+# CLASSES DES ENNEMIS
+
+class Ennemis(ElementGraphique):
+	def __init__(self, fenetre, images, x, y):
+		super().__init__(fenetre,images, x, y)
+		self.vie = 20
+		self.vitesse = 5
+
+	def deplacer(self):
+		self.rect.x -= 2
+		self.rect.y -= 0
+
+	def collision(self, t, tirs):
+		if self.rect.colliderect(t):
+			self.vie -= 20
+	
+	def enVie(self, ennemies, largeur, hauteur):
+		if self.vie <= 0 or self.rect.x < 0-self.rect.w:
+			return False
+		return True
 
 class Meteorite(ElementGraphique):
 	def __init__(self, fenetre, img, x , y):
 		super().__init__(fenetre, img, x, y)
 		self.damage = 10
 		self.vy = 7
+		self.vie = 2
 
-	def move(self, largeur, hauteur,ennemies):
+	def deplacer(self):
 		self.rect.y += self.vy
 
-								
+	def enVie(self, ennemies, largeur, hauteur):
+		if self.vie <= 0 or self.rect.y > hauteur:
+			return False
+		return True
+
+	def collision(self, t, tirs):
+		pass

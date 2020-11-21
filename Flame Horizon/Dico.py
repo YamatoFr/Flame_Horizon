@@ -13,10 +13,6 @@ images = {}
 images['fond_0']= pg.image.load("image/bg/fond_0.jpg").convert()
 images['fond_1'] = pg.image.load("image/bg/fond_1.jpg").convert()
 images['vaisseau1'] = pg.image.load("image/perso/perso_1.png").convert_alpha()
-images['vaisseau2'] = pg.image.load("image/perso/perso_2.png").convert_alpha()
-images['vaisseau3'] = pg.image.load("image/perso/perso_3.png").convert_alpha()
-images['vaisseau4'] = pg.image.load("image/perso/perso_4.png").convert_alpha()
-images['vaisseau5'] = pg.image.load("image/perso/perso_5.png").convert_alpha()
 images['astéroide'] = pg.image.load("image/ennemies/astéroide.png").convert_alpha()
 images['tribase1_nor'] = pg.image.load("image/ennemies/tribase1_nor.png").convert_alpha()
 images['tribase1_chr'] = pg.image.load("image/ennemies/tribase1_chr.png").convert_alpha()
@@ -34,11 +30,40 @@ ecriture['play'] = font_1.render("PLAY", 1, (255,255,255))
 ecriture['quit'] = font_1.render("exit", 1, (255,255,255))
 ecriture['play_select'] = font_1.render("PLAY", 1, (255,0,0))
 ecriture['quit_select'] = font_1.render("exit", 1, (255,0,0))
+ecriture['vie'] = font_1.render("vie",1, (178,0,154))
 
-def tir(tirs, images, compteur, fps, duree):
-	if compteur/fps % duree ==0:
-		tirs.append(Tirs(fenetre, images['flame'], random.randint(0, largeur), random.randint(0, hauteur)))
-		#L'aléatoire n'est ici que pour le test
+def tir(tirs, images, compteur, fps, duree, perso):
+	tirs.append(Tirs(fenetre, images['flame'], perso.rect.x + perso.rect.w, perso.rect.y+10))
+		
+def ajouter(i,hauteur, largeur, images, ennemies,a):
+	if i%a == 0:
+		rdn = random.random()
+		if 0 <rdn< 0.2:
+			ennemies.append(Meteorite(fenetre, images["astéroide"], randint(0, largeur), randint(0, hauteur//hauteur)))
+		elif 0.2 <rdn< 1:
+			ennemies.append(Ennemis(fenetre, images["tribase1_nor"], largeur+20,randint(0,hauteur-20)))
+	return a	
 
-def ajouter(hauteur, largeur, images, ennemies):
-	ennemies.append(Meteorite(fenetre, images["astéroide"], randint(0, largeur), randint(0, hauteur//hauteur)))
+def affichage(tirs, ennemies):
+	for t in tirs:
+		t.afficher()
+
+	for ennemie in ennemies :
+		ennemie.afficher()
+
+def deplacements(tirs, ennemies):
+	for t in tirs:
+		t.deplacer()
+
+	for ennemie in ennemies :
+		ennemie.deplacer()
+
+# def nettoyage(tirs, ennemies):
+	# newtab = []
+	# for ennemie in ennemies:
+		# for t in tirs:
+			# ennemie.collision(t, tirs)
+		# if ennemie.enVie(ennemies):
+			# newtab.append(ennemie)
+		# ennemies = newtab
+	# return ennemies, newtab
