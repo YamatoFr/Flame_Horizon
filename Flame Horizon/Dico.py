@@ -40,9 +40,13 @@ def ajouter(i,hauteur, largeur, images, ennemies,a):
 		rdn = random.random()
 		if 0 <rdn< 0.2:
 			ennemies.append(Meteorite(fenetre, images["astéroide"], randint(0, largeur), randint(0, hauteur//hauteur)))
-		elif 0.2 <rdn< 1:
+		elif 0.2 <rdn< 0.6:
 			ennemies.append(Ennemis(fenetre, images["tribase1_nor"], largeur+20,randint(0,hauteur-20)))
+		#elif 0.6 <rdn< 1:
+			#ennemies.append(Hunter(fenetre, images["tribase3_chr"], largeur+20,randint(0,hauteur-20)))	
 	return a	
+	
+
 
 def affichage(tirs, ennemies):
 	for t in tirs:

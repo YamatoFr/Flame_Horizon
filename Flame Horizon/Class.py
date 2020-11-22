@@ -54,6 +54,7 @@ class Perso(ElementGraphique):
 		super().__init__(fenetre, img, x, y)
 		self.vitesse = 7
 		self.vie = 20
+		
 
 
 	def deplacer(self, touches, largeur, hauteur):
@@ -73,7 +74,9 @@ class Perso(ElementGraphique):
 
 	def collision(self, ennemie, ennemies):
 		if self.rect.colliderect(ennemie):
-			self.vie-=2
+			self.vie-=10
+			#if self.vie >=1:				
+				#ennemies.remove(ennemie)
 
 	def en_vie(self):
 		if self.vie<=0:
@@ -85,7 +88,7 @@ class Tirs(ElementAnime):
 		"""docstring for Tirs"""
 		def __init__(self, fenetre, images, x=0, y=0):
 			super().__init__(fenetre, images, x, y)
-			self.dx = 7
+			self.dx = 12
 			self.dy = 0
 
 		def deplacer(self):
@@ -100,11 +103,13 @@ class Tirs(ElementAnime):
 
 # CLASSES DES ENNEMIS
 
+
 class Ennemis(ElementGraphique):
 	def __init__(self, fenetre, images, x, y):
 		super().__init__(fenetre,images, x, y)
 		self.vie = 20
 		self.vitesse = 5
+		
 
 	def deplacer(self):
 		self.rect.x -= 2
@@ -113,6 +118,7 @@ class Ennemis(ElementGraphique):
 	def collision(self, t, tirs):
 		if self.rect.colliderect(t):
 			self.vie -= 20
+			
 	
 	def enVie(self, ennemies, largeur, hauteur):
 		if self.vie <= 0 or self.rect.x < 0-self.rect.w:
@@ -136,3 +142,38 @@ class Meteorite(ElementGraphique):
 
 	def collision(self, t, tirs):
 		pass
+
+
+
+
+class Hunter(ElementGraphique):
+	def __init__(self, fenetre, images, x, y):
+		super().__init__(fenetre,images, x, y)
+		self.vie = 10
+		self.vx, self.vy = 4, 7
+		self.rebonds = 0
+		self.rebmax = 3
+
+	def deplacer(self, hauteur, largeur, ennemies):
+		rebond = False
+		self.rect.x -= self.vx
+		self.rect.y -= self.vy
+		if self.rect.y>hauteur - self.rect.h:
+			self.vy = -abs(self.vy)
+			rebond = True
+		if self.rect.y<0:
+			self.vy = abs(self.vy)
+			rebond = True		
+		if rebond == True:
+			self.rebonds += 1
+		#if self.rebmax == self.rebonds:
+			#ennemies.remove(ennemie)		
+
+	def collision(self, t, tirs):
+		if self.rect.colliderect(t):
+			self.vie -= 20		
+
+	def enVie(self, ennemies, largeur, hauteur):
+		if self.vie <= 0 or self.rect.x < 0-self.rect.w :
+			return False
+		return True		

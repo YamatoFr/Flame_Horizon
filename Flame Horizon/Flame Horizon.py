@@ -16,9 +16,13 @@ select = 1
 ennemies = []
 a=100
 niveau = 1
+score = 0
+
+
 
 perso = Perso(fenetre, images['vaisseau1'],240, 300)
 ennemis = Ennemis(fenetre, images['tribase1_nor'], largeur+20,randint(0,hauteur+20))
+hunter = Hunter(fenetre, images['tribase3_chr'], largeur+20,randint(0,hauteur+20))
 meteorite = Meteorite(fenetre, images['astéroide'], randint(0, largeur), randint(0, hauteur//hauteur))
 fond_0 = ElementGraphique(fenetre, images['fond_0'], 0, 0)
 fond_1 = ElementGraphique(fenetre, images['fond_1'], 0, 0)
@@ -65,10 +69,12 @@ while State:
 
 
 	if State == "Jeu":
+		
 		fond_1.afficher()
 		#txt_vie.afficher()
 		perso.afficher()
 		perso.deplacer(touches, largeur, hauteur)
+		
 		
 		if touches[pg.K_l] and i-last_tirs>30:
 			tir(tirs, images, i, fps, 1, perso)
@@ -82,6 +88,7 @@ while State:
 		new_en = []
 		# new_tir = []
 		for ennemie in ennemies:
+			#perso.collision(ennemie, ennemies)
 			for t in tirs:
 				ennemie.collision(t, tirs)
 				# Cause un crash lors de la sortie de l'écran
@@ -89,6 +96,9 @@ while State:
 						# new_tir.append(t)
 			if ennemie.enVie(ennemies, largeur, hauteur):
 				new_en.append(ennemie)
+			if not ennemie.enVie(ennemies, largeur, hauteur):
+				score+=10
+					
 			ennemies = new_en
 			# tirs = new_tir
 
