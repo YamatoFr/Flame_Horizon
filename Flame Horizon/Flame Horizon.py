@@ -88,7 +88,6 @@ while State:
 		new_en = []
 		# new_tir = []
 		for ennemie in ennemies:
-			#perso.collision(ennemie, ennemies)
 			for t in tirs:
 				ennemie.collision(t, tirs)
 				# Cause un crash lors de la sortie de l'écran
@@ -102,8 +101,8 @@ while State:
 			ennemies = new_en
 			# tirs = new_tir
 
-		deplacements(tirs, ennemies, hunter)
-		affichage(tirs, ennemies, hunter)
+		deplacements(tirs, ennemies)
+		affichage(tirs, ennemies)
 			
 	pg.display.flip()
 pg.quit()

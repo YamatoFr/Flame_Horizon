@@ -42,29 +42,29 @@ def ajouter(i,hauteur, largeur, images, ennemies, a):
 			ennemies.append(Meteorite(fenetre, images["astéroide"], randint(0, largeur), randint(0, hauteur//hauteur)))
 		elif 0.2 <rdn< 0.6:
 			ennemies.append(Ennemis(fenetre, images["tribase1_nor"], largeur+20,randint(0,hauteur-20)))
-		elif 0.6 <rdn< 1:
-			ennemies.append(Hunter(fenetre, images["tribase3_chr"], largeur+20,randint(0,hauteur-20)))	
+		# elif 0.6 <rdn< 1:
+			# ennemies.append(Hunter(fenetre, images["tribase3_chr"], largeur+20,randint(0,hauteur-20)))	
 	return a	
 	
-def deplacements(tirs, ennemies, hunter):
+def deplacements(tirs, ennemies):
 	for t in tirs:
 		t.deplacer()
 
-	for hunter in ennemies:
-		hunter.deplacer(hauteur, largeur, ennemies)
+	# for hunter in ennemies:
+		# hunter.deplacer(hauteur, largeur, ennemies)
 
 	for ennemie in ennemies :
 		ennemie.deplacer()
 
-def affichage(tirs, ennemies, hunter):
+def affichage(tirs, ennemies):
 	for t in tirs:
 		t.afficher()
 
 	for ennemie in ennemies :
 		ennemie.afficher()
 
-	for hunter in ennemies:
-		hunter.afficher()
+	# for hunter in ennemies:
+		# hunter.afficher()
 
 
 # def nettoyage(tirs, ennemies):
