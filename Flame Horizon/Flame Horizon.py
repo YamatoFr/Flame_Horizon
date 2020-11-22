@@ -94,16 +94,16 @@ while State:
 				# Cause un crash lors de la sortie de l'écran
 				# if t.collision(ennemie, ennemies): 
 						# new_tir.append(t)
-			if ennemie.enVie(ennemies, largeur, hauteur):
+			if ennemie.enVie(perso, ennemies, largeur, hauteur):
 				new_en.append(ennemie)
-			if not ennemie.enVie(ennemies, largeur, hauteur):
+			if not ennemie.enVie(perso, ennemies, largeur, hauteur):
 				score+=10
 					
 			ennemies = new_en
 			# tirs = new_tir
 
-		deplacements(tirs, ennemies)
-		affichage(tirs, ennemies)
+		deplacements(tirs, ennemies, hunter)
+		affichage(tirs, ennemies, hunter)
 			
 	pg.display.flip()
 pg.quit()

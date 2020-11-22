@@ -103,7 +103,6 @@ class Tirs(ElementAnime):
 
 # CLASSES DES ENNEMIS
 
-
 class Ennemis(ElementGraphique):
 	def __init__(self, fenetre, images, x, y):
 		super().__init__(fenetre,images, x, y)
@@ -118,10 +117,9 @@ class Ennemis(ElementGraphique):
 	def collision(self, t, tirs):
 		if self.rect.colliderect(t):
 			self.vie -= 20
-			
 	
-	def enVie(self, ennemies, largeur, hauteur):
-		if self.vie <= 0 or self.rect.x < 0-self.rect.w:
+	def enVie(self, perso, ennemies, largeur, hauteur):
+		if self.vie <= 0 or self.rect.x < 0-self.rect.w or self.rect.colliderect(perso):
 			return False
 		return True
 
@@ -135,15 +133,13 @@ class Meteorite(ElementGraphique):
 	def deplacer(self):
 		self.rect.y += self.vy
 
-	def enVie(self, ennemies, largeur, hauteur):
+	def enVie(self, perso, ennemies, largeur, hauteur):
 		if self.vie <= 0 or self.rect.y > hauteur:
 			return False
 		return True
 
 	def collision(self, t, tirs):
 		pass
-
-
 
 
 class Hunter(ElementGraphique):
@@ -173,7 +169,7 @@ class Hunter(ElementGraphique):
 		if self.rect.colliderect(t):
 			self.vie -= 20		
 
-	def enVie(self, ennemies, largeur, hauteur):
+	def enVie(self, perso, ennemies, largeur, hauteur):
 		if self.vie <= 0 or self.rect.x < 0-self.rect.w :
 			return False
 		return True		
