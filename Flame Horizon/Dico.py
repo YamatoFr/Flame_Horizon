@@ -6,6 +6,8 @@ from Class import *
 largeur, hauteur = 1300, 650
 fenetre=pg.display.set_mode((largeur,hauteur))
 font_1 = pg.font.Font("ecriture/STJEDISE.TTF",100)
+font_2 = pg.font.Font("ecriture/STJEDISE.TTF",30)
+score = 0
 
 
 
@@ -21,38 +23,35 @@ images['tribase2_chr'] = pg.image.load("image/ennemies/tribase2_chr.png").conver
 images['tribase3_nor'] = pg.image.load("image/ennemies/tribase3_nor.png").convert_alpha()
 images['tribase3_chr'] = pg.image.load("image/ennemies/tribase3_chr.png").convert_alpha()
 images['flame'] = []
+images['boss'] = []
 for i in range(4):
 	images['flame'].append(pg.image.load('image/tirs/flameBall_'+str(i)+'.png').convert_alpha())
+for i in range(9):
+	images['boss'].append(pg.image.load('image/boss/redfighter_'+str(i)+'.png').convert_alpha())
+
+perso = Perso(fenetre, images['vaisseau1'],240, 300)
+
+son_tir = pg.mixer.Sound("sons/Laser Shot.wav")
 
 
-ecriture ={}
-ecriture['play'] = font_1.render("PLAY", 1, (255,255,255))
-ecriture['quit'] = font_1.render("exit", 1, (255,255,255))
-ecriture['play_select'] = font_1.render("PLAY", 1, (255,0,0))
-ecriture['quit_select'] = font_1.render("exit", 1, (255,0,0))
-ecriture['vie'] = font_1.render("vie",1, (178,0,154))
+def tir(tirs, images,fenetre, perso):
+	tirs.append(Shoot(fenetre, images['flame'], perso.rect.x + perso.rect.w, perso.rect.y+10, 20))
+	
 
-def tir(tirs, images, compteur, fps, duree, perso):
-	tirs.append(Tirs(fenetre, images['flame'], perso.rect.x + perso.rect.w, perso.rect.y+10))
+
 		
-def ajouter(i,hauteur, largeur, images, ennemies, a):
-	if i%a == 0:
-		rdn = random.random()
-		if 0 <rdn< 0.2:
-			ennemies.append(Meteorite(fenetre, images["astéroide"], randint(0, largeur), randint(0, hauteur//hauteur)))
-		elif 0.2 <rdn< 0.6:
-			ennemies.append(Ennemis(fenetre, images["tribase1_nor"], largeur+20,randint(0,hauteur-20)))
-		# elif 0.6 <rdn< 1:
-			# ennemies.append(Hunter(fenetre, images["tribase3_chr"], largeur+20,randint(0,hauteur-20)))	
-	return a	
+def ajouter(ennemies,images,largeur, hauteur, fenetre):
+	rdn = random.random()
+	if 0 <rdn< 0.80:
+		ennemies.append(Ennemis(fenetre, images["tribase1_nor"], largeur-20,randint(0,hauteur-100), "Pion"))
+	elif 0.80 <rdn< 1:
+		ennemies.append(Boss(fenetre, images["boss"], largeur-20,randint(0,hauteur-100), "Boss"))		
 	
 def deplacements(tirs, ennemies):
 	for t in tirs:
 		t.deplacer()
 
-	# for hunter in ennemies:
-		# hunter.deplacer(hauteur, largeur, ennemies)
-
+	
 	for ennemie in ennemies :
 		ennemie.deplacer()
 
@@ -63,24 +62,5 @@ def affichage(tirs, ennemies):
 	for ennemie in ennemies :
 		ennemie.afficher()
 
-	# for hunter in ennemies:
-		# hunter.afficher()
 
 
-# def nettoyage(tirs, ennemies):
-	# new_en = []
-	# new_tir = []
-	# for ennemie in ennemies:
-		#perso.collision(ennemie, ennemies)
-		# for t in tirs:
-			# ennemie.collision(t, tirs)
-			# Cause un crash lors de la sortie de l'écran
-			# if t.collision(ennemie, ennemies): 
-					# new_tir.append(t)
-		# if ennemie.enVie(perso, ennemies, largeur, hauteur):
-			# new_en.append(ennemie)
-		# if not ennemie.enVie(perso, ennemies, largeur, hauteur):
-			# score+=10
-				
-		# ennemies = new_en
-		# tirs = new_tir

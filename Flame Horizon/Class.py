@@ -16,6 +16,7 @@ class ElementGraphique:
 		self.fenetre.blit(self.image, self.rect)
 
 
+
 class ElementAnime(ElementGraphique):
 
 	def __init__(self, fenetre, images, x=0, y=0):
@@ -53,123 +54,107 @@ class Perso(ElementGraphique):
 	def __init__(self, fenetre, img, x=100, y=325):
 		super().__init__(fenetre, img, x, y)
 		self.vitesse = 7
-		self.vie = 20
+		self.vie = 100
 		
 
 
 	def deplacer(self, touches, largeur, hauteur):
-		if (touches[pg.K_RIGHT] or touches[pg.K_d]) and self.rect.x < largeur - self.rect.w:
-			self.rect.x += self.vitesse
-
-		if (touches[pg.K_LEFT] or touches[pg.K_a]) and self.rect.x > 0:
-			self.rect.x -= self.vitesse
-
 		if (touches[pg.K_UP] or touches[pg.K_w]) and self.rect.y > 0:
 			self.rect.y -= self.vitesse 
 
 		if (touches[pg.K_DOWN] or touches[pg.K_s]) and self.rect.y < hauteur - self.rect.h:
 			self.rect.y += self.vitesse
-		#if touches[pg.K_C] :
+
 	
 
-	def collision(self, ennemie, ennemies):
+	def collision(self, ennemie, Ennemis):
 		if self.rect.colliderect(ennemie):
-			self.vie-=10
-			#if self.vie >=1:				
-				#ennemies.remove(ennemie)
+			if ennemie.pouvoir == "Pion":
+				self.vie-=10
+				ennemie.vie = 0
+			if ennemie.pouvoir == "Boss":
+				self.vie-=50
+				ennemie.vie=0		
+			
 
 	def en_vie(self):
 		if self.vie<=0:
-			return False 
+			return "game_over" 
 		return "Jeu"
 
 
-class Tirs(ElementAnime):
-		"""docstring for Tirs"""
-		def __init__(self, fenetre, images, x=0, y=0):
-			super().__init__(fenetre, images, x, y)
-			self.dx = 12
-			self.dy = 0
+class Shoot(ElementAnime):
+	def __init__(self, fenetre, images, x=0, y=0, degats=0):
+		super().__init__(fenetre, images, x, y)
+		self.dx = 12
+		self.dy = 0
+		self.vie = 1
+		self.degats = degats
 
-		def deplacer(self):
-			self.rect.x += self.dx
-			self.rect.y += self.dy
+	def deplacer(self):
+		self.rect.x += self.dx
+		self.rect.y += self.dy
 
-		# def collision(self, ennemie, ennemies):
-			# if self.rect.colliderect(ennemie):
-				# return False
-			# return True
+	def collision(self, ennemie):
+		if self.rect.colliderect(ennemie):
+			self.vie = 0
+			ennemie.retirer_vie(self)
+
+
+
 
 
 # CLASSES DES ENNEMIS
 
+
 class Ennemis(ElementGraphique):
-	def __init__(self, fenetre, images, x, y):
+	def __init__(self, fenetre, images, x, y, pouvoir):
 		super().__init__(fenetre,images, x, y)
 		self.vie = 20
-		self.vitesse = 5
-		
+		self.vitesse = 5	
+		self.pouvoir = pouvoir
+
+
 
 	def deplacer(self):
 		self.rect.x -= 2
 		self.rect.y -= 0
 
+
+
+
 	def collision(self, t, tirs):
 		if self.rect.colliderect(t):
 			self.vie -= 20
-	
-	def enVie(self, perso, ennemies, largeur, hauteur):
-		if self.vie <= 0 or self.rect.x < 0-self.rect.w or self.rect.colliderect(perso):
-			return False
-		return True
 
-class Meteorite(ElementGraphique):
-	def __init__(self, fenetre, img, x , y):
-		super().__init__(fenetre, img, x, y)
-		self.damage = 10
-		self.vy = 7
-		self.vie = 2
+
+	def retirer_vie(self, autre):
+		self.vie-= autre.degats
+
+
+
+class Boss(ElementAnime):
+	def __init__(self, fenetre, images, x, y, pouvoir):
+		super().__init__(fenetre,images, x, y)
+		self.vie = 100
+		self.vitesse = 2	
+		self.pouvoir = pouvoir
+
 
 	def deplacer(self):
-		self.rect.y += self.vy
+		self.rect.x -= 2
+		self.rect.y -= 0
 
-	def enVie(self, perso, ennemies, largeur, hauteur):
-		if self.vie <= 0 or self.rect.y > hauteur:
-			return False
-		return True
-
-	def collision(self, t, tirs):
-		pass
-
-
-class Hunter(ElementGraphique):
-	def __init__(self, fenetre, images, x, y):
-		super().__init__(fenetre,images, x, y)
-		self.vie = 10
-		self.vx, self.vy = 4, 7
-		self.rebonds = 0
-		self.rebmax = 3
-
-	def deplacer(self, hauteur, largeur, ennemies):
-		rebond = False
-		self.rect.x -= self.vx
-		self.rect.y -= self.vy
-		if self.rect.y>hauteur - self.rect.h:
-			self.vy = -abs(self.vy)
-			rebond = True
-		if self.rect.y<0:
-			self.vy = abs(self.vy)
-			rebond = True		
-		if rebond == True:
-			self.rebonds += 1
-		#if self.rebmax == self.rebonds:
-			#ennemies.remove(ennemie)		
 
 	def collision(self, t, tirs):
 		if self.rect.colliderect(t):
-			self.vie -= 20		
+			self.vie -= 20
 
-	def enVie(self, perso, ennemies, largeur, hauteur):
-		if self.vie <= 0 or self.rect.x < 0-self.rect.w :
-			return False
-		return True		
+
+	def retirer_vie(self, autre):
+		self.vie-= autre.degats		 
+			
+
+	
+
+	
