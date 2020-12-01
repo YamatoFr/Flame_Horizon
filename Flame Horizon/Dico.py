@@ -1,6 +1,6 @@
 import pygame as pg
 import random
-from random import randint
+from random import randint, choice
 from Class import *
 
 largeur, hauteur = 1300, 650
@@ -22,6 +22,9 @@ images['tribase2_nor'] = pg.image.load("image/ennemies/tribase2_nor.png").conver
 images['tribase2_chr'] = pg.image.load("image/ennemies/tribase2_chr.png").convert_alpha()
 images['tribase3_nor'] = pg.image.load("image/ennemies/tribase3_nor.png").convert_alpha()
 images['tribase3_chr'] = pg.image.load("image/ennemies/tribase3_chr.png").convert_alpha()
+
+images['vie+'] = pg.image.load("image/bonus/bonus1.png").convert_alpha()
+images['vie-'] = pg.image.load("image/bonus/bonus2.png").convert_alpha()
 images['flame'] = []
 images['boss'] = []
 for i in range(4):
@@ -40,27 +43,44 @@ def tir(tirs, images,fenetre, perso):
 
 
 		
-def ajouter(ennemies,images,largeur, hauteur, fenetre):
-	rdn = random.random()
-	if 0 <rdn< 0.80:
-		ennemies.append(Ennemis(fenetre, images["tribase1_nor"], largeur-20,randint(0,hauteur-100), "Pion"))
-	elif 0.80 <rdn< 1:
-		ennemies.append(Boss(fenetre, images["boss"], largeur-20,randint(0,hauteur-100), "Boss"))		
+def ajouter_ennemis(ennemies,images,largeur, hauteur, fenetre, i, c, niveau):
+	if i%450==0:
+		niveau+= 1
+		if c > 30:
+			c-=30
+
+	if i%c==0:
+		rdn = random.random()
+		if 0 <rdn< 0.80:
+			ennemies.append(Ennemis(fenetre, images["tribase1_nor"], largeur-20,randint(0,hauteur-100), "Pion"))
+		elif 0.80 <rdn< 1:
+			ennemies.append(Boss(fenetre, images["boss"], largeur-20,randint(0,hauteur-100), "Boss"))
+	return niveau,c	
+
+def ajouter_bonus(l_bonus, images,largeur, hauteur, fenetre):
+	name = choice(["vie+","vie-"])
+	l_bonus.append(Bonus(fenetre, images[name],name, largeur-20,randint(0,hauteur-100)))
+				
 	
-def deplacements(tirs, ennemies):
+def deplacements(tirs, ennemies, l_bonus):
 	for t in tirs:
 		t.deplacer()
 
-	
+	for bonus in l_bonus:
+		bonus.deplacerr()
+
 	for ennemie in ennemies :
 		ennemie.deplacer()
+		
 
-def affichage(tirs, ennemies):
+def affichage(tirs, ennemies, l_bonus):
 	for t in tirs:
 		t.afficher()
 
+	for bonus in l_bonus:
+		bonus.afficher()	
+
 	for ennemie in ennemies :
 		ennemie.afficher()
-
 
 

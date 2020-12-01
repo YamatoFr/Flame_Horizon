@@ -15,6 +15,12 @@ class ElementGraphique:
 	def afficher(self):
 		self.fenetre.blit(self.image, self.rect)
 
+	def retirer_vie(self, autre):
+		self.vie-= autre.degats 
+
+	def collision(self, autre):
+		if self.rect.colliderect(autre.rect):
+			self.retirer_vie(autre)  
 
 
 class ElementAnime(ElementGraphique):
@@ -38,7 +44,7 @@ class ElementAnime(ElementGraphique):
 
 
 class DeplacementLineaire(ElementGraphique):
-	"""docstring for DeplacementLineaire"""
+	"""docstring for DeplacementLineaire""" 
 	def __init__(self, fenetre, img, x=0, y=0):
 		ElementGraphique.__init__(self, fenetre, img, x, y)
 		self.dx = -3
@@ -59,6 +65,12 @@ class Perso(ElementGraphique):
 
 
 	def deplacer(self, touches, largeur, hauteur):
+		if (touches[pg.K_RIGHT] or touches[pg.K_d]) and self.rect.x < largeur - self.rect.w:
+			self.rect.x += self.vitesse
+
+		if (touches[pg.K_LEFT] or touches[pg.K_a]) and self.rect.x > 0:
+			self.rect.x -= self.vitesse
+
 		if (touches[pg.K_UP] or touches[pg.K_w]) and self.rect.y > 0:
 			self.rect.y -= self.vitesse 
 
@@ -74,7 +86,8 @@ class Perso(ElementGraphique):
 				ennemie.vie = 0
 			if ennemie.pouvoir == "Boss":
 				self.vie-=50
-				ennemie.vie=0		
+				ennemie.vie=0
+			                  
 			
 
 	def en_vie(self):
@@ -103,6 +116,30 @@ class Shoot(ElementAnime):
 
 
 
+class Bonus(ElementGraphique):
+	def __init__(self, fenetre, images, o, x=0, y=0):
+		super().__init__(fenetre, images, x, y)
+		self.vie = 1
+		self.vx = 5
+		self.vy = 0
+		self.pouvoir = o
+
+	def deplacerr(self):
+		self.rect.x -= self.vx
+		self.rect.y -= self.vy
+
+	def collisionn(self, autre):
+		if self.rect.colliderect(autre.rect):
+			if self.pouvoir == "vie+":
+				autre.vie+= 5
+				self.vie=0
+			if self.pouvoir == "vie-":
+				autre.vie-= 10
+				self.vie=0 	
+
+
+
+
 
 # CLASSES DES ENNEMIS
 
@@ -111,7 +148,7 @@ class Ennemis(ElementGraphique):
 	def __init__(self, fenetre, images, x, y, pouvoir):
 		super().__init__(fenetre,images, x, y)
 		self.vie = 20
-		self.vitesse = 5	
+		self.vitesse = 5    
 		self.pouvoir = pouvoir
 
 
@@ -120,16 +157,6 @@ class Ennemis(ElementGraphique):
 		self.rect.x -= 2
 		self.rect.y -= 0
 
-
-
-
-	def collision(self, t, tirs):
-		if self.rect.colliderect(t):
-			self.vie -= 20
-
-
-	def retirer_vie(self, autre):
-		self.vie-= autre.degats
 
 
 
@@ -137,7 +164,7 @@ class Boss(ElementAnime):
 	def __init__(self, fenetre, images, x, y, pouvoir):
 		super().__init__(fenetre,images, x, y)
 		self.vie = 100
-		self.vitesse = 2	
+		self.vitesse = 2    
 		self.pouvoir = pouvoir
 
 
@@ -146,13 +173,9 @@ class Boss(ElementAnime):
 		self.rect.y -= 0
 
 
-	def collision(self, t, tirs):
-		if self.rect.colliderect(t):
-			self.vie -= 20
+	
 
-
-	def retirer_vie(self, autre):
-		self.vie-= autre.degats		 
+	 
 			
 
 	

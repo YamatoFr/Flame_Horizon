@@ -19,10 +19,11 @@ score = 0
 last_tirs = 0
 ennemies = []
 tirs = []
-
+l_bonus = []
+c = 150
+v = 250
 
 perso = Perso(fenetre, images['vaisseau1'],0,247)
-ennemis = Ennemis(fenetre, images['tribase1_nor'], largeur+20,randint(0,hauteur+20), "pouvoir")
 fond_0 = ElementGraphique(fenetre, images['fond_0'], 0, 0)
 fond_1 = ElementGraphique(fenetre, images['fond_1'], 0, 0)
 
@@ -92,37 +93,55 @@ while State:
 		Image_score = ElementGraphique(fenetre, image_score,0,25)
 
 		image_vie = font_2.render("vie :" + str(perso.vie),1, (178,0,154))
-		Image_vie = ElementGraphique(fenetre, image_vie,50,0)
+		Image_vie = ElementGraphique(fenetre, image_vie,0,0)
+
+		image_niveau = font_2.render("niveau :" + str(niveau),1, (178,0,154))
+		Image_niveau = ElementGraphique(fenetre, image_niveau,0,50)
 
 		fond_1.afficher()
 		perso.afficher()
 		perso.deplacer(touches, largeur, hauteur)
 		State = perso.en_vie()
-		print(len(tirs))
+		
 
 		if touches[pg.K_l] and i-last_tirs>30:
 			tir(tirs, images,fenetre, perso)
 			son_tir.play()
 			last_tirs = i
+			
 
-		if i%100==0:
-			ajouter(ennemies,images,largeur, hauteur, fenetre)
+		niveau,c = ajouter_ennemis(ennemies,images,largeur, hauteur, fenetre, i,c, niveau)
+
 		
+
+		if i%250 == 0:
+			ajouter_bonus(l_bonus, images,largeur, hauteur, fenetre)
+	
+
 		for ennemie in ennemies:
 			perso.collision(ennemie, Ennemis)
 			for t in tirs:
 				t.collision(ennemie)
-	
+				
+
+		for bonus in l_bonus:
+			bonus.collisionn(perso)
+		
+		
+		
 
 		tirs,s = suppTrucs(tirs, largeur, hauteur)
 		ennemies,z = suppTrucs(ennemies, largeur, hauteur)
+		l_bonus, j = suppTrucs(l_bonus, largeur, hauteur)
 		score+=s
 
+		
 
-		deplacements(tirs, ennemies)
-		affichage(tirs, ennemies)
+		deplacements(tirs, ennemies, l_bonus)
+		affichage(tirs, ennemies, l_bonus)
 		Image_score.afficher()
-		Image_vie.afficher()	
+		Image_vie.afficher()
+		Image_niveau.afficher()	
 		
 
 
@@ -130,7 +149,7 @@ while State:
 	if State == "game_over":
 		fond_1.afficher()
 		image_resultat = font_2.render("votre score est :" + str(score),1,(178,0,154))
-		Image_resultat = ElementGraphique(fenetre, image_resultat,0,200)		
+		Image_resultat = ElementGraphique(fenetre, image_resultat,400,200)		
 		Image_resultat.afficher()
 		if touches [pg.K_ESCAPE]:
 			State = "Menu"
